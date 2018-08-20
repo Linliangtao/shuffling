@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>简单的轮播</title>
+  <style>
+    .green{
+    color:green;
+    }
+    .images{
+    display: flex;
+    align-items: flex-start;
+    transition: all 0.5s;
+     }
+    .images > img{
+    vertical-align: top;
+    }
+     .window{
+    width: 300px;
+    overflow: hidden;
+     }
+  </style>
+  
+</head>
+
+<body> 
+    <h1>简单的轮播</h1>
+  <div class="window">
+    <div class="images" id=images>
+      <img src="./pic/a1.jpg" width=300  height=200>
+      <img src="./pic/a2.jpg" width=300  height=200>
+      <img src="./pic/a3.jpg" width=300  height=200>
+      <img src="./pic/a4.jpg" width=300  height=200>
+      <img src="./pic/a5.jpg" width=300  height=200>
+      <img src="./pic/a6.jpg" width=300  height=200>
+    </div>
+  </div>
+  <span id=buttons>
+    <span>第1张</span>
+    <span>第2张</span>
+    <span>第3张</span>
+    <span>第4张</span>
+    <span>第5张</span>
+    <span>第6张</span>    
+  </span>
+
+<script>
+var allButtons = $('#buttons > span')
+
+for (let i = 0; i < allButtons.length; i++) {
+  $(allButtons[i]).on('click', function(x) {
+    var index = $(x.currentTarget).index()
+    var p = index * -300
+    $('#images').css({
+      transform: 'translate(' + p + 'px)'
+    })
+    n = index
+    activeButton(allButtons.eq(n))
+  })
+}
+var n = 0;
+var size = allButtons.length
+allButtons.eq(n % size).trigger('click')
+
+
+var timerId = setTimer()
+
+function setTimer() {
+  return setInterval(() => {
+    n += 1
+    allButtons.eq(n % size).trigger('click')
+  }, 2000)
+}
+
+function activeButton($button) {
+  $button
+    .addClass('green')
+    .siblings('.green').removeClass('green')
+}
+
+$('.window').on('mouseenter', function() {
+  window.clearInterval(timerId)
+})
+
+$('.window').on('mouseleave', function() {
+  timerId = setTimer()
+})
+
+</script>
+</body>
+
+</html>
